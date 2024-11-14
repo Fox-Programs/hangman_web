@@ -9,6 +9,9 @@ import (
 	"strings"
 )
 
+type page struct {
+}
+
 func main() {
 	mot := mot()
 	pendu(mot)
@@ -51,7 +54,7 @@ func pendu(mot []string) {
 	fmt.Println("Bonne chance t'a 10 essais sinon: rm -rf / ")
 
 	for i := 10; i > 0; {
-			fmt.Println(strings.Join(motshown, "")) //Print le mot avec tiret
+		fmt.Println(strings.Join(motshown, "")) //Print le mot avec tiret
 		guess := input(mot)
 		if guess == strings.Join(mot, "") { //c vrmnt de la merde 4 ligne parce que j'ai la flemme si guess = mot a trouver
 			welive()
@@ -166,4 +169,8 @@ func welive() {
 	⠀⠀⠀⠀⠀⠀⠑⢦⣄⣉⣑⠢⠄⠀⠀⠀⡇`
 
 	fmt.Print(str, "we live we love")
+}
+
+func html() {
+
 }
