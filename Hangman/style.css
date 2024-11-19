@@ -1,0 +1,26 @@
+/* Assurer que le body occupe toute la hauteur de la fenêtre */
+body {
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Hauteur de la fenêtre */
+    margin: 0; /* Enlève les marges par défaut */
+    box-sizing: border-box; /* Assure que les bordures ne sortent pas du calcul de hauteur */
+}
+
+/* Le conteneur qui englobe le bouton */
+.button-container {
+    display: flex;            /* Active le mode Flexbox */
+    justify-content: center;  /* Centre horizontalement */
+    align-items: center;      /* Centre verticalement */
+}
+
+/* Style du bouton */
+button {
+    padding: 120px 600px;       /* Taille du bouton */
+    font-size: 200px;         /* Taille du texte */
+    background-color: black; /* Couleur de fond */
+    color: white;             /* Couleur du texte */
+    border-radius: 100px;       /* Coins arrondis */
+}
