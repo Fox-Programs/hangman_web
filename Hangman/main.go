@@ -3,8 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"html/template"
 	"io"
 	"math/rand"
+	"net/http"
 	"os"
 	"strings"
 )
@@ -172,5 +174,11 @@ func welive() {
 }
 
 func html() {
-
+	h1 := func(w http.ResponseWrite, r *http.Request){
+		tmpl := template.Must(template.ParseFiles("index.html")) //a faire jsplus ce que j'ai fait
+		pendu:= map[string][]test{
+			"pendu": {
+			}
+		}
+	}
 }

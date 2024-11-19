@@ -1,25 +1,42 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <title>Pendu</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <title>Pendu</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&"> <!-- importe une police d'écriture-->
+    </head>
+    <body>
 
-    <h1>Jeu du Pendu</h1>
+        <h1 id="titre1" >Jeu du Pendu</h1>
 
-    <div class="button-container">
-        <button type="button" onclick="hrefFunction()">Jouer</button>
-    </div>
+        <div class="button-container">
+            <button id="button" onclick="hrefFunction()">Jouer</button>
+        </div>
+            <audio id="musique" src="musique/02. Dirtmouth.mp3"></audio>
+            <button id="bmusique" onclick="playmusic()">CLIQUE MOI CLIQUE MOI CLIQUE MOI!!</button> <!-- ils voulaient pas que je lance la musique au démarrage ducoup j'ai improvisé-->
+        <script>
+            function hrefFunction(){
+                window.location.href = "http://127.0.0.1:3000/Hangman/html/pendu.html";
+            }
 
-    <script>
-        function hrefFunction(){
-            window.location.href = "http://127.0.0.1:3000/Hangman/html/pendu.html";
-        }
-    </script>
+            function playmusic(){
+                var sound = document.getElementById('musique');
+                var musicButton = document.getElementById('bmusique'); // definie les variables
 
-</body>
-<footer>
-</footer>
-</html>
+                if (sound.paused || sound.ended) {
+                    sound.play();
+                    musicButton.innerText = "Musique: ON"; //met musique si en pause
+                } else {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    musicButton.innerText = "Musique: OFF"; //met pause si musique 
+
+                }
+            }
+        </script>
+
+    </body>
+    <footer>
+    </footer>
+    </html>

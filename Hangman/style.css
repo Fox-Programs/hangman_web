@@ -13,14 +13,49 @@ body {
 .button-container {
     display: flex;            /* Active le mode Flexbox */
     justify-content: center;  /* Centre horizontalement */
-    align-items: center;      /* Centre verticalement */
+    align-items:center;   /* Centre verticalement */
 }
 
 /* Style du bouton */
-button {
-    padding: 120px 600px;       /* Taille du bouton */
-    font-size: 200px;         /* Taille du texte */
-    background-color: black; /* Couleur de fond */
-    color: white;             /* Couleur du texte */
-    border-radius: 100px;       /* Coins arrondis */
+#button {
+    font-family:fantasy;
+    height: 500px;
+    border-style: none;
+    padding: 30px px;       /* Taille du bouton */
+    font-size: 100px;         /* Taille du texte */
+    background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
+    color: rgb(229, 239, 242);             /* Couleur du texte */
+    text-shadow:
+      0 0 7px #16161a,
+      0 0 10px #0d0e10,
+      0 0 21px #151789,
+      0 0 42px rgb(37, 37, 38),
+      0 0 82px rgb(11, 11, 11),
+      0 0 92px rgb(26, 29, 28),
+      0 0 102px rgba(21, 0, 255, 0),
+      0 0 151px rgb(30, 30, 31);
+}
+#titre1 {
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+#bmusique{
+    font-family:fantasy;
+    border-style: none;
+    padding: 30px px;       /* Taille du bouton */
+    font-size: 50px;         /* Taille du texte */
+    background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
+    color: rgb(229, 239, 242);
 }
