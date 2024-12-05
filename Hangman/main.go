@@ -172,13 +172,3 @@ func welive() {
 
 	fmt.Print(str, "we live we love")
 }
-
-func html() {
-	h1 := func(w http.ResponseWrite, r *http.Request){
-		tmpl := template.Must(template.ParseFiles("index.html")) //a faire jsplus ce que j'ai fait
-		pendu:= map[string][]test{
-			"pendu": {
-			}
-		}
-	}
-}
