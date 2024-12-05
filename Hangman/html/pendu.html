@@ -1,16 +1,49 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
-    
+    <meta charset="UTF-8">
+    <title>Jeu du Pendu</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .word { font-size: 24px; letter-spacing: 10px; }
+        .status { margin: 20px 0; }
+    </style>
 </head>
 <body>
-    <h1> jeu du pendu </h1>
-    <form action="/pendu" method="post">
-        <label for="mot">{{motshown}}</label><br>
-        <input type="text" id="mot" name="input" />
-        <input type="submit" value="Entrer" hidden />
-    </form>
-</body>
+    <h1>Jeu du Pendu</h1>
 
+    <div class="status">
+        <p class="attempts">Essais restants : {{.RemainingAttempts}}</p>
+        <p class="word">
+            {{range .WordShown}}
+                {{if eq . "_"}}_ {{else}}{{.}} {{end}}
+            {{end}}
+        </p>
+    </div>
+
+    {{if eq .GameStatus "ongoing"}}
+    <form method="POST">
+        <input type="text" name="guess" maxlength="10" required 
+               placeholder="Entrez une lettre ou un mot">
+        <button type="submit">Devine</button>
+    </form>
+
+    <div class="used-letters">
+        <p>Lettres/mots déjà utilisés :</p>
+        <p>
+            {{range .GuessedLetters}}
+                {{.}} 
+            {{end}}
+        </p>
+    </div>
+    {{else if eq .GameStatus "won"}}
+    <h2 style="color: green;">BIen joué mon cop1</h2>
+    <p>Le mot était : {{.TargetWord}}</p>
+    <a href="/pendu">Nouvelle partie</a>
+    {{else}}
+    <h2 style="color: red;">.</h2>
+    <p>Le mot était : {{.TargetWord}}</p>
+    <a href="/pendu">Nouvelle partie</a>
+    {{end}}
+</body>
 </html>

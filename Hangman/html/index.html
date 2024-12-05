@@ -3,8 +3,8 @@
 <head>
     <title>Pendu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/style.css"> <!-- Corrected path for CSS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&"> <!-- Import Google Fonts -->
+    <link rel="stylesheet" href="/assets/style.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&"> 
 </head>
 <body>
 
@@ -14,26 +14,25 @@
         <button id="button" onclick="hrefFunction()">Jouer</button>
     </div>
 
-    <audio id="musique" src="/musique/02. Dirtmouth.mp3"></audio> <!-- Corrected path for audio -->
+    <audio id="musique" src="/musique/02. Dirtmouth.mp3"></audio> 
     <button id="bmusique" onclick="playmusic()">CLIQUE MOI CLIQUE MOI CLIQUE MOI!!</button>
 
     <script>
         function hrefFunction() {
-            // Redirect to the correct path for pendu.html
             window.location.href = "http://localhost:7080/pendu";
         }
 
         function playmusic() {
             var sound = document.getElementById('musique');
-            var musicButton = document.getElementById('bmusique'); // Define variables
+            var musicButton = document.getElementById('bmusique'); 
 
             if (sound.paused || sound.ended) {
                 sound.play();
-                musicButton.innerText = "Musique: ON"; // Update button text when playing
+                musicButton.innerText = "Musique: ON"; 
             } else {
                 sound.pause();
                 sound.currentTime = 0;
-                musicButton.innerText = "Musique: OFF"; // Update button text when paused
+                musicButton.innerText = "Musique: OFF";
             }
         }
     </script>

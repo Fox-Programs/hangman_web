@@ -1,199 +1,148 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"html/template"
 	"io"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"strings"
-	"log"
 )
 
-type variable struct {
-	i int;
-	motshown string;
-	guess string;
+type HangmanGame struct {
+	RemainingAttempts int      `json:"remaining_attempts"`
+	WordShown         []string `json:"word_shown"`
+	GuessedLetters    []string `json:"guessed_letters"`
+	TargetWord        string   `json:"target_word"`
+	GameStatus        string   `json:"game_status"`
 }
 
-func main() {
-	server()
-	mot := mot()
-	pendu(mot)
-}
+var currentGame *HangmanGame
 
-func mot() []string {
-	fileIO, err := os.OpenFile("dic/words.txt", os.O_RDWR, 0600) //open le fichier
+func initGame() *HangmanGame {
+	fileIO, err := os.OpenFile("dic/words.txt", os.O_RDWR, 0600)
 	if err != nil {
-		panic(err)
+		log.Println("Error opening words file:", err)
+		return nil
 	}
 	defer fileIO.Close()
 
-	rawBytes, err := io.ReadAll(fileIO) //lit le fichier
+	rawBytes, err := io.ReadAll(fileIO)
 	if err != nil {
-		panic(err)
+		log.Println("Error reading words file:", err)
+		return nil
 	}
 
-	lines := strings.Split(string(rawBytes), "\n")                //lines contient les mots du fichier
-	rdmnbr := rand.Intn(len(lines))                               //choisi nombre aléatoire dans la limite
-	selecmot := strings.ToUpper(strings.TrimSpace(lines[rdmnbr])) //met le mot en maj
+	lines := strings.Split(string(rawBytes), "\n")
+	rdmnbr := rand.Intn(len(lines))
+	selecmot := strings.ToUpper(strings.TrimSpace(lines[rdmnbr]))
 
-	return strings.Split(selecmot, "") //divise le mot en mettant des espaces
+	game := &HangmanGame{
+		RemainingAttempts: 10,
+		TargetWord:        selecmot,
+		WordShown:         make([]string, len(selecmot)),
+		GuessedLetters:    []string{},
+		GameStatus:        "ongoing",
+	}
+
+	for i := range game.WordShown {
+		game.WordShown[i] = "_"
+	}
+
+	for i := 0; i < len(selecmot)/2-1; i++ {
+		rdmindex := rand.Intn(len(selecmot))
+		for game.WordShown[rdmindex] != "_" {
+			rdmindex = rand.Intn(len(selecmot))
+		}
+		game.WordShown[rdmindex] = string(selecmot[rdmindex])
+	}
+
+	return game
 }
 
-func pendu(mot []string) {
-	motC := strings.Join(mot, " ")
-	fmt.Println(motC) // Print le mot caché faut penser a l'enlever c pour les tests
-	motshown := strings.Split(motC, "")
-	luse := []string{}
-	for i, v := range motshown {
-		if v >= "A" && v <= "Z" { //change le mot en _ sauf rdmindex
-			motshown[i] = "_"
-		}
-	}
-	motref := string(motC)
-	for i := 0; len(mot)/2-1 > i; i++ {
-		rdmindex := rdm(motshown)
-		motshown[rdmindex] = string(motC[rdmindex])
-	}
-	fmt.Println("Bonne chance t'a 10 essais sinon: rm -rf / ")
-
-	for i := 10; i > 0; {
-		fmt.Println(strings.Join(motshown, "")) //Print le mot avec tiret
-		guess := input(mot)
-		if guess == strings.Join(mot, "") { //c vrmnt de la merde 4 ligne parce que j'ai la flemme si guess = mot a trouver
-			welive()
+func penduHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "GET":
+		currentGame = initGame()
+		tmpl, err := template.ParseFiles("./html/pendu.html")
+		if err != nil {
+			http.Error(w, "Error loading template", http.StatusInternalServerError)
 			return
 		}
-		luse = append(luse, guess)                 //Prend l'input de l'user
-		if !veriflettre(motref, guess, motshown) { // motshown == string[] / motC et motref == string
-			i--
-			if len(guess) > 1 && i-1 >= 0 {
-				i--
-			}
-			printlependu(i)
 
-		}
-		if compare(motshown, motref) {
-			welive()
+		if err := tmpl.Execute(w, currentGame); err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
 			return
 		}
-		fmt.Print("\nLettre(s)/mot(s) déjà utilisés", luse, "\n")
 
+	case "POST":
+		if err := r.ParseForm(); err != nil {
+			http.Error(w, "Error parsing form", http.StatusBadRequest)
+			return
+		}
+
+		guess := strings.ToUpper(r.Form.Get("guess"))
+		processGuess(guess)
+		tmpl, err := template.ParseFiles("./html/pendu.html")
+		if err != nil {
+			http.Error(w, "Error loading template", http.StatusInternalServerError)
+			return
+		}
+
+		if err := tmpl.Execute(w, currentGame); err != nil {
+			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			return
+		}
 	}
-	fmt.Println("\nNan le niveau c'est grave la le mot fût : ", strings.Join(mot, ""))
-
 }
 
-func printlependu(i int) {
-	fmt.Printf("Pas présent ou déjà mis, il te reste %d essais\n", i)
-	file, err := os.Open("dic/hangman.txt") //pareil ouvre le fichier si erreur print erreur
-	if err != nil {
-		fmt.Println("ilé où le hangman", err)
+func processGuess(guess string) {
+	if currentGame == nil || currentGame.GameStatus != "ongoing" {
 		return
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file) //fait un buffer qui va lire le fichier
-	lineCount := 0
-	startLine := (9 - i) * 8 // José 8 ligne permet d'afficher le pendu suivant
-	for scanner.Scan() {
-		if lineCount >= startLine && lineCount < startLine+7 { //print le pendu
-			fmt.Println(scanner.Text())
+	if guess == currentGame.TargetWord {
+		currentGame.WordShown = strings.Split(currentGame.TargetWord, "")
+		currentGame.GameStatus = "won"
+		return
+	}
+
+	currentGame.GuessedLetters = append(currentGame.GuessedLetters, guess)
+
+	found := false
+	for i, char := range currentGame.TargetWord {
+		if string(char) == guess && currentGame.WordShown[i] == "_" {
+			currentGame.WordShown[i] = guess
+			found = true
 		}
-		lineCount++
 	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Println("frr le fichier iléou", err)
+	if !found {
+		currentGame.RemainingAttempts--
 	}
-}
 
-func veriflettre(motref string, guess string, motshown []string) bool {
-	c := false
-	for i := range motref {
-		if string(motref[i]) == guess && guess != motshown[i] {
-			motshown[i] = string(motref[i])
-			c = true
-		}
-
+	if currentGame.RemainingAttempts <= 0 {
+		currentGame.GameStatus = "lost"
 	}
-	return c
-}
 
-func rdm(motshown []string) int {
-	rdmindex := rand.Intn(len(motshown))
-	for motshown[rdmindex] != "_" {
-		rdmindex = rand.Intn(len(motshown) - 1)
+	if strings.Join(currentGame.WordShown, "") == currentGame.TargetWord {
+		currentGame.GameStatus = "won"
 	}
-	fmt.Println(rdmindex) //debug a enlever
-	return rdmindex
-}
-
-func input(mot []string) string {
-	var guess string
-	fmt.Print("\nMot ou lettre :")
-	fmt.Scanln(&guess)
-	guess = strings.ToUpper(guess)
-	if guess >= "A" && guess <= "Z" || guess == strings.Join(mot, "") {
-		return guess
-	}
-	return input(mot)
-
-}
-
-func compare(motshown []string, motref string) bool { // aucun intêret j'ai fait une fonction pour une ligne
-	return strings.Join(motshown, "") == motref
-}
-func welive() {
-	str := `⠀⠀⠀⠀⠀⢀⡤⠖⠒⠢⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⠀⠀⡴⠃⠀⠀⠀⠀⠀⠙⢦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⠀⣰⠁⠀⠀⠀⠀⠀⠀⠀⠈⠳⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⡰⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠂⠀⠤⠤⡀⠈⠳⣄⠀⠀⠀⠀⠀⠀⠀⠀
-	⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠑⢄⠀⠀⠀⠀⠀⠀
-	⢠⠞⠁⠀⣀⣠⣤⠤⠤⠤⠤⢤⣤⠤⠤⠤⠤⣤⣀⣀⡀⠀⠀⠀⠑⢤⠀⠀⠀⠀
-	⣣⠔⠚⠻⣄⣡⣞⣄⣠⣆⠀⢼⣼⣄⣀⣀⣠⣆⠜⡘⡻⠟⠙⣲⠦⣈⢳⡀⠀⠀
-	⡇⠒⢲⡤⡜⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠤⣖⠬⠓⠂⠉⣿⠇⠀⠀
-	⠙⠲⠦⠬⣧⡀⠀⠀⠀⠀⠀⣠⣿⣿⣷⡄⠀⠀⠀⠀⠀⣞⠀⢀⣲⠖⠋⠀⠀⠀
-	⠀⠀⠀⠀⠘⣟⢢⠃⠀⠀⠀⠉⠙⠻⠛⠁⠀⠀⠀⢀⡜⠒⢋⡝⠁⢀⣀⣤⠂⠀
-	⠀⠀⠀⠀⠀⡇⠷⠆⠶⠖⠀⠀⠀⠀⠀⠀⠀⠀⣠⠮⠤⠟⠉⠀⢰⠱⡾⣧⠀⠀
-	⠀⠀⠀⠀⠀⠹⢄⣀⣀⠀⠀⠀⠀⠀⠀⣀⡤⠚⠁⠀⢠⣤⡀⣼⢾⠀⠀⡟⠀⠀
-	⠀⠀⠀⠀⠀⠀⠀⠀⠙⠛⠛⠒⡏⠀⡡⠣⢖⣯⠶⢄⣀⣿⡾⠋⢸⢀⡶⠿⠲⡀
-	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⣹⠃⣀⣤⠞⠋⠀⠉⠢⣿⣿⡄⠀⣿⠏⠀⠀⠐⢣
-	⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⢱⢡⡾⠋⠀⠀⢀⡐⣦⣀⠈⠻⣇⢸⢁⣤⡙⡆⠈⡏
-	⠀⠀⠀⠀⠀⠀⣠⠎⢁⠔⡳⡟⠀⠐⠒⠒⠋⠀⠠⡯⠙⢧⡈⠻⣮⠯⣥⠧⠞⠁
-	⠀⠀⠀⣀⠴⠋⠀⢶⠋⢸⡝⠀⠀⠀⠀⠀⠀⠀⠀⣸⢦⠀⠙⡆⠘⠦⢄⡀⠀⠀
-	⠀⠀⣸⠅⢀⡤⢺⢸⠀⢸⡃⠤⠀⠀⠀⠀⣀⡤⢚⣋⣿⢄⡀⢇⡀⠀⠀⣝⡶⠀
-	⠀⠀⢿⠀⡏⠀⠘⠞⠀⢸⡵⣦⠤⠤⠖⣿⠥⠞⠉⠀⢸⠖⠁⠀⠙⠢⣑⠶⣽⢂
-	⠀⠀⠸⠤⠃⠀⠀⠀⠀⠀⠉⢳⠂⠈⡽⠁⠀⠀⠀⢀⡼⠒⠓⢤⠀⠀⠀⠙⠚⠛
-	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠓⡎⠀⠀⠀⠀⢠⠎⣠⠀⠀⠈⢳⠀⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⢸⡶⠗⠋⣱⠄⠀⠀⠀⣧⠀⠀⠀⢀
-	⠀⠀⠀⠀⠀⠀⠀⣀⠴⠒⠒⠦⣤⣷⠂⢀⡸⠁⠀⡼⠁⠀⠀⠀⠈⢺⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⢠⠋⢀⣀⡀⠀⠀⠀⠀⠀⠈⡇⠀⠀⠙⠢⠤⠤⣄⡤⠼⠀⠀⠀⠀
-	⠀⠀⠀⠀⠀⠀⠑⢦⣄⣉⣑⠢⠄⠀⠀⠀⡇`
-
-	fmt.Print(str, "we live we love")
 }
 
 func server() {
-
 	fileServer := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fileServer)
 
-
-	http.HandleFunc("/test", indexHandler)
 	http.HandleFunc("/pendu", penduHandler)
-
 
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-
 	musique := http.FileServer(http.Dir("./musique"))
 	http.Handle("/musique/", http.StripPrefix("/musique/", musique))
-
 
 	fmt.Println("Server running at http://localhost:7080/")
 	if err := http.ListenAndServe(":7080", nil); err != nil {
@@ -201,28 +150,6 @@ func server() {
 	}
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-
-	if r.URL.Path != "/test" {
-		http.Error(w, "Page not found", http.StatusNotFound)
-		return
-	}
-
-
-	if r.Method != "GET" {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return
-	}
-
-	http.ServeFile(w, r, "./html/index.html")
-}
-
-func penduHandler(w http.ResponseWriter, r *http.Request) {
-
-	if r.URL.Path != "/pendu" {
-		http.Error(w, "Page not found", http.StatusNotFound)
-		return
-	}
-
-	http.ServeFile(w, r, "./html/pendu.html")
+func main() {
+	server()
 }
