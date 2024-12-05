@@ -3,7 +3,7 @@
 <head>
     <title>Pendu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/style.css"> 
+    <link rel="stylesheet" href="/assets/style.css?v1.0"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&"> 
 </head>
 <body>
@@ -11,7 +11,7 @@
     <h1 id="titre1">Jeu du Pendu</h1>
 
     <div class="button-container">
-        <button id="button" onclick="hrefFunction()">Jouer</button>
+        <button id="button" class="jouer" onclick="hrefFunction()">Jouer</button>
     </div>
 
     <audio id="musique" src="/musique/02. Dirtmouth.mp3"></audio> 
@@ -35,6 +35,7 @@
                 musicButton.innerText = "Musique: OFF";
             }
         }
+
     </script>
 
 </body>
