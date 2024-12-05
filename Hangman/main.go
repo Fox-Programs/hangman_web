@@ -3,18 +3,22 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"html/template"
 	"io"
 	"math/rand"
 	"net/http"
 	"os"
 	"strings"
+	"log"
 )
 
-type page struct {
+type variable struct {
+	i int;
+	motshown string;
+	guess string;
 }
 
 func main() {
+	server()
 	mot := mot()
 	pendu(mot)
 }
@@ -171,4 +175,54 @@ func welive() {
 	⠀⠀⠀⠀⠀⠀⠑⢦⣄⣉⣑⠢⠄⠀⠀⠀⡇`
 
 	fmt.Print(str, "we live we love")
+}
+
+func server() {
+
+	fileServer := http.FileServer(http.Dir("./html"))
+	http.Handle("/", fileServer)
+
+
+	http.HandleFunc("/test", indexHandler)
+	http.HandleFunc("/pendu", penduHandler)
+
+
+	fs := http.FileServer(http.Dir("./assets"))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+
+
+	musique := http.FileServer(http.Dir("./musique"))
+	http.Handle("/musique/", http.StripPrefix("/musique/", musique))
+
+
+	fmt.Println("Server running at http://localhost:7080/")
+	if err := http.ListenAndServe(":7080", nil); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/test" {
+		http.Error(w, "Page not found", http.StatusNotFound)
+		return
+	}
+
+
+	if r.Method != "GET" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	http.ServeFile(w, r, "./html/index.html")
+}
+
+func penduHandler(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/pendu" {
+		http.Error(w, "Page not found", http.StatusNotFound)
+		return
+	}
+
+	http.ServeFile(w, r, "./html/pendu.html")
 }

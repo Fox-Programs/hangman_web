@@ -6,11 +6,10 @@
 </head>
 <body>
     <h1> jeu du pendu </h1>
-    <form>
-        <label for="mot">Mot ou lettre</label><br>
-        <input type="text" id="mot" name="mot">
-        <input type="submit" hidden>
-
+    <form action="/pendu" method="post">
+        <label for="mot">{{motshown}}</label><br>
+        <input type="text" id="mot" name="input" />
+        <input type="submit" value="Entrer" hidden />
     </form>
 </body>
 
