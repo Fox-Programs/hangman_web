@@ -37,16 +37,28 @@
 }
 .jouer:hover{
     text-shadow:
-      0 0 7px rgb(243, 243, 248),
-      0 0 10px rgb(243, 243, 248),
+      0 0 7px rgb(194, 194, 199),
+      0 0 10px rgb(182, 182, 187),
       0 0 21px rgb(243, 243, 248),
-      0 0 42px rgb(243, 243, 248),
-      0 0 82px rgb(252, 249, 249),
-      0 0 92px rgb(244, 247, 246),
-      0 0 102px rgba(21, 0, 255, 0),
-      0 0 151px rgb(250, 250, 252);
+      0 0 42px rgb(243, 243, 248);
 }
 #titre1 {
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+#titre2 {
     justify-content: center;
     display: flex;
     align-items:center;
@@ -79,14 +91,10 @@
     color: rgb(255, 255, 255);
 }
 .pendu{
-    background-color:  rgb(255, 255, 255);
-    font-family: Arial, sans-serif;
-    text-align: center;
     background-image: url('background2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
     background-attachment: fixed;
     overflow: hidden; 
 }
@@ -120,5 +128,112 @@
      transform: rotate(90deg) translateX(calc(100vh));
     }
    }
+#animated-image{
+    height: 200px ;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0px;
+    left: 80px ;
 
- 
+    
+}
+
+.word{
+    font-family: 'Trajan Pro', sans-serif;
+    color:whitesmoke;
+    font-size:125px;
+    text-align:center;
+    text-shadow:
+    3px 3px rgba(24, 25, 27, 0.938);
+    
+
+
+}
+.guess {
+    border-color: rgb(255, 255, 255);
+    border-style: none;
+    background-color: #00000050;
+    width: 800px;
+    color: rgb(255, 255, 255);
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 70px;
+    border-radius: 8px;
+    background-image: url("lance.png");
+    background-repeat: no-repeat;
+    padding-left: 320px;
+
+    margin: 0 auto; 
+    display: block; 
+}
+.guess:focus{
+    background-color: #00000071;
+    outline:none;
+}
+.used-letters{
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: rgb(10, 12, 65);
+    text-shadow:  
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px rgb(217, 220, 234),
+    0 0 102px rgba(110, 109, 121, 0.959),
+    0 0 151px rgba(24, 25, 27, 0.938);
+    text-align:center;
+}
+.reveal{
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: rgb(0, 0, 0);
+    text-shadow:  
+    0 0 10px #ff0000,
+    0 0 21px #ff0000,
+    0 0 42px rgb(217, 220, 234),
+    0 0 102px rgba(110, 109, 121, 0.959),
+    0 0 151px rgba(24, 25, 27, 0.938);
+    text-align:center;
+}
+
+.win{
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #2a48aa,
+      0 0 10px #2a50b9,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+.loose{
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 100px;
+    color: #000000;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #f50000,
+      0 0 10px #ff0000,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+.encore {
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding-right: 50px;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: #000000;
+    text-shadow: 0 0 7px #000000;
+}
+.encore:hover{
+    color:white;
+}

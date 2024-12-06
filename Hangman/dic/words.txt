@@ -28,7 +28,6 @@ meuble
 mousse
 mur
 porte
-portemanteau
 poubelle
 radiateur
 rampe
