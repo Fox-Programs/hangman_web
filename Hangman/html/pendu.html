@@ -2,16 +2,13 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/style.css?v1.0">
     <title>Jeu du Pendu</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .word { font-size: 24px; letter-spacing: 10px; }
-        .status { margin: 20px 0; }
-    </style>
 </head>
-<body>
-    <h1>Jeu du Pendu</h1>
+<body class="pendu">
+    <p id="img" data-remaining="{{.RemainingAttempts}}"></p>
 
+    <h1>Jeu du Pendu</h1>
     <div class="status">
         <p class="attempts">Essais restants : {{.RemainingAttempts}}</p>
         <p class="word">
@@ -41,9 +38,38 @@
     <p>Le mot était : {{.TargetWord}}</p>
     <a href="/pendu">Nouvelle partie</a>
     {{else}}
-    <h2 style="color: red;">.</h2>
+    <h2 style="color: red;">FF</h2>
     <p>Le mot était : {{.TargetWord}}</p>
     <a href="/pendu">Nouvelle partie</a>
     {{end}}
+
+    <script>    
+        const imgContainer = document.getElementById("img");
+        const remaining = parseInt(imgContainer.getAttribute("data-remaining"), 10);
+        let text = "";
+        for (let i = 0; i < remaining; i++) {
+            text += '<img src="assets/hp.png" alt="hp">';
+        }if (remaining < 10){
+            for (let i = 0; i < 10 - remaining; i++){
+                text += '<img src="assets/hplost.png" alt="hp">';
+            }
+        }
+        imgContainer.innerHTML = text;
+    </script>
+
+    <script type="text/javascript">
+
+        let hrElement;
+        let counter = 25;
+        for (let i = 0; i < counter; i++) {
+          hrElement = document.createElement("HR");
+          
+            hrElement.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+            hrElement.style.animationDuration = 0.2 + Math.random() * 0.3 + "s";
+         
+          document.body.appendChild(hrElement);
+        }   
+      </script>
+
 </body>
 </html>

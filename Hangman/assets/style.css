@@ -1,12 +1,10 @@
 /* Assurer que le body occupe toute la hauteur de la fenêtre */
-body {
+.index {
     background-image: url('background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh; /* Hauteur de la fenêtre */
-    margin: 0; /* Enlève les marges par défaut */
-    box-sizing: border-box; /* Assure que les bordures ne sortent pas du calcul de hauteur */
 }
 
 /* Le conteneur qui englobe le bouton */
@@ -14,7 +12,7 @@ body {
     display: flex;            /* Active le mode Flexbox */
     justify-content: center;  /* Centre horizontalement */
     align-items:center;   /* Centre verticalement */
-    height: 500px;/
+    height: 500px;
 }
 
 /* Style du bouton */
@@ -80,3 +78,47 @@ body {
     background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
     color: rgb(255, 255, 255);
 }
+.pendu{
+    background-color:  rgb(255, 255, 255);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-image: url('background2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-attachment: fixed;
+    overflow: hidden; 
+}
+.word  { 
+    font-size: 24px; letter-spacing: 10px; 
+}
+.status {
+     margin: 20px 0; 
+    }
+
+ hr{
+        width: 10px;
+        border-color: transparent;
+        border-right-color: rgba(232, 225, 225, 0.7);
+        border-right-width: 80px;
+        position: absolute;
+        bottom: 100%;
+        transform-origin: 100% 50%;
+        animation-name: rain;
+        animation-timing-function: ease-in;
+        animation-iteration-count: infinite;
+        animation-delay: -2s;
+
+  }
+
+  @keyframes rain {
+    from {
+     transform: rotate(90deg) translateX(0);
+    }
+    to {
+     transform: rotate(90deg) translateX(calc(100vh));
+    }
+   }
+
+ 

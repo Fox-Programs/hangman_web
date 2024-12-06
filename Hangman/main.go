@@ -21,6 +21,10 @@ type HangmanGame struct {
 
 var currentGame *HangmanGame
 
+func main() {
+	server()
+}
+
 func initGame() *HangmanGame {
 	fileIO, err := os.OpenFile("dic/words.txt", os.O_RDWR, 0600)
 	if err != nil {
@@ -148,8 +152,4 @@ func server() {
 	if err := http.ListenAndServe(":7080", nil); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func main() {
-	server()
 }
