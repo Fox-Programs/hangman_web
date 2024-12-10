@@ -17,6 +17,7 @@ type HangmanGame struct {
 	GuessedLetters    []string `json:"guessed_letters"`
 	TargetWord        string   `json:"target_word"`
 	GameStatus        string   `json:"game_status"`
+	Difficulty        string   `json:"difficulty"` 
 }
 
 var currentGame *HangmanGame
@@ -25,8 +26,20 @@ func main() {
 	server()
 }
 
-func initGame() *HangmanGame {
-	fileIO, err := os.OpenFile("dic/words.txt", os.O_RDWR, 0600)
+func initGame(difficulty string) *HangmanGame {
+	var filepath string
+	switch difficulty {
+	case "facile":
+		filepath = "dic/words1.txt"
+	case "moyen":
+		filepath = "dic/words2.txt"
+	case "difficile":
+		filepath = "dic/words3.txt"
+	default:
+		filepath = "dic/words.txt" // Par défaut
+	}
+
+	fileIO, err := os.OpenFile(filepath, os.O_RDWR, 0600)
 	if err != nil {
 		log.Println("Error opening words file:", err)
 		return nil
@@ -49,6 +62,7 @@ func initGame() *HangmanGame {
 		WordShown:         make([]string, len(selecmot)),
 		GuessedLetters:    []string{},
 		GameStatus:        "ongoing",
+		Difficulty:        difficulty, 
 	}
 
 	for i := range game.WordShown {
@@ -69,7 +83,9 @@ func initGame() *HangmanGame {
 func penduHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		currentGame = initGame()
+		difficulty := r.URL.Query().Get("difficulty") // Récupération de la difficulté
+		currentGame = initGame(difficulty)
+
 		tmpl, err := template.ParseFiles("./html/pendu.html")
 		if err != nil {
 			http.Error(w, "Error loading template", http.StatusInternalServerError)
@@ -77,7 +93,7 @@ func penduHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := tmpl.Execute(w, currentGame); err != nil {
-			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			http.Error(w, "Error la template", http.StatusInternalServerError)
 			return
 		}
 
@@ -89,6 +105,7 @@ func penduHandler(w http.ResponseWriter, r *http.Request) {
 
 		guess := strings.ToUpper(r.Form.Get("guess"))
 		processGuess(guess)
+
 		tmpl, err := template.ParseFiles("./html/pendu.html")
 		if err != nil {
 			http.Error(w, "Error loading template", http.StatusInternalServerError)
@@ -96,7 +113,7 @@ func penduHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := tmpl.Execute(w, currentGame); err != nil {
-			http.Error(w, "Error rendering template", http.StatusInternalServerError)
+			http.Error(w, "Error ici template", http.StatusInternalServerError)
 			return
 		}
 	}
@@ -136,11 +153,49 @@ func processGuess(guess string) {
 	}
 }
 
+func diffhandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "non", http.StatusMethodNotAllowed)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("./html/difficulté.html")
+	if err != nil {
+		http.Error(w, "template non", http.StatusInternalServerError)
+		return
+	}
+
+	if err := tmpl.Execute(w, currentGame); err != nil {
+		http.Error(w, "template non", http.StatusInternalServerError)
+		return
+	}
+}
+
+func reglehandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "non", http.StatusMethodNotAllowed)
+		return
+	}
+
+	tmpl, err := template.ParseFiles("./html/règles.html")
+	if err != nil {
+		http.Error(w, "template non", http.StatusInternalServerError)
+		return
+	}
+
+	if err := tmpl.Execute(w, currentGame); err != nil {
+		http.Error(w, "template non", http.StatusInternalServerError)
+		return
+	}
+}
+
 func server() {
 	fileServer := http.FileServer(http.Dir("./html"))
 	http.Handle("/", fileServer)
 
 	http.HandleFunc("/pendu", penduHandler)
+	http.HandleFunc("/diff", diffhandler)
+	http.HandleFunc("/règles", reglehandler)
 
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))

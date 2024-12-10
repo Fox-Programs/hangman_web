@@ -5,6 +5,7 @@
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh; /* Hauteur de la fenêtre */
+    overflow:hidden;
 }
 
 /* Le conteneur qui englobe le bouton */
@@ -248,21 +249,12 @@
     padding-right: 50px;
     font-family: 'Trajan Pro', sans-serif;
     font-size: 50px;
-    color: #000000;
-    text-shadow: 0 0 7px #000000;
+    color: #49494d;
+    text-shadow: 0 0 7px #050505;
 }
 .encore:hover{
     color:white;
 }
-
-body {
-    background-image: url(backrondRegles.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-}
-
 h1 {
     font-family: fantasy;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);

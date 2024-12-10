@@ -17,10 +17,9 @@
     </div>
 
     {{if eq .GameStatus "ongoing"}}
-    <form method="POST">
+    <form method="POST" autocomplete="off">
         <input type="text" autofocus="true" class="guess" name="guess" maxlength="10" required >
     </form>
-
     <div class="used-letters">
         <p>
             {{range .GuessedLetters}}
@@ -28,13 +27,16 @@
             {{end}}
         </p>
     </div>
-    {{else if eq .GameStatus "won"}}
-    <h2 class="win">Ton daron serait fière</h2>
-    <a class="encore" href="/pendu">Encore ?</a>
     {{else}}
-    <h2 class="loose">Vous avez échoué</h2>
-    <p class="reveal">Le mot était : {{.TargetWord}}</p>
-    <a  class="encore" href="/pendu">Encore ?</a>
+   
+        {{if eq .GameStatus "won"}}
+            <h2 class="win">Ton daron serait fier</h2>
+        {{else}}
+            <h2 class="loose">Vous avez échoué</h2>
+            <p class="reveal">Le mot était : {{.TargetWord}}</p>
+        {{end}}
+
+        <a class="encore" href="/pendu?difficulty={{.Difficulty}}">Encore ?</a>
     {{end}}
 
     <div id="image-container">
@@ -118,6 +120,6 @@ setInterval(animateImages, 400);
           </script>
 </body>
 <footer>
-    
+    <a href="http://localhost:7080/diff" class="changed">Choix de la difficulté</a>
 </footer>
 </html>
