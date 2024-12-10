@@ -13,16 +13,14 @@
     <div class="button-container">
         <button id="button" class="jouer" onclick="hrefFunction()">Jouer</button>
     </div>
-    <a href="regles.html" class="a">Les régles du Pendu</a> 
-    <audio id="musique" src="/musique/02. Dirtmouth.mp3"></audio> 
-    <button id="bmusique" onclick="playmusic()">CLIQUE MOI CLIQUE MOI CLIQUE MOI!!</button>
-
+    <a href="http://localhost:7080/règles" class="a">Les régles du Pendu</a> 
+    
     <script>
         function hrefFunction() {
             window.location.href = "http://localhost:7080/diff";
         }
 
-        function playmusic() {
+        function playmusic() { //j'ai enlevé le bouton je garde voir si je peux pas le mettre ailleurs
             var sound = document.getElementById('musique');
             var musicButton = document.getElementById('bmusique'); 
 

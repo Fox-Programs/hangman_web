@@ -36,7 +36,7 @@ func initGame(difficulty string) *HangmanGame {
 	case "difficile":
 		filepath = "dic/words3.txt"
 	default:
-		filepath = "dic/words.txt" // Par défaut
+		filepath = "dic/words.txt" 
 	}
 
 	fileIO, err := os.OpenFile(filepath, os.O_RDWR, 0600)

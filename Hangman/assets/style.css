@@ -291,7 +291,7 @@ h4 {
     font-size: 2vw;
 }
 
-p {
+.reglep{
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     text-align: center;
@@ -310,8 +310,7 @@ p {
     justify-content: center;
     display: flex;
     align-items:center;
-    font-family:sofia;
-    font-family: fantasy;
+    font-family: 'Trajan Pro', sans-serif;
             text-decoration: none; /* Supprimer le soulignement */
             font-size: 2.5rem; /* Taille du texte */
             transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
@@ -366,4 +365,67 @@ p {
       0 0 21px rgb(243, 243, 248),
       0 0 42px rgb(243, 243, 248);
          
+}
+
+.regle {
+    background-image: url(backrondRegles.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    overflow:hidden;
+    
+}
+
+.changed {
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 40px;
+    color: #49494d;
+    text-shadow: 0 0 7px #050505;
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    margin: 10px; 
+}
+
+.changed:hover{
+    color:white;
+}
+
+.diffbody{
+    background-image: url('jéplusdidée.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Hauteur de la fenêtre */
+    overflow:hidden;
+}
+
+.diffbody {
+    background-image: url('jéplusdidée.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; 
+    overflow: hidden;
+}
+
+.menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    padding: 10px;
+}
+
+.bbb {
+    font-family:fantasy;
+    text-align: right; 
+    margin: 60px 0; 
+    font-size: 60px; 
+    color: #fff; 
+    text-decoration: none; 
+}
+
+.bbb:hover {
+    color: #7f7f7f; 
 }
