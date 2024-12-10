@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Pendu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/style.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&"> 
+</head>
+<body class="index">
+
+    <h1 id="titre1">Jeu du Pendu</h1>
+
+    <div class="button-container">
+        <button id="button" class="jouer" onclick="hrefFunction()">Jouer</button>
+    </div>
+    <a href="regles.html" class="a">Les régles du Pendu</a> 
+    <audio id="musique" src="/musique/02. Dirtmouth.mp3"></audio> 
+    <button id="bmusique" onclick="playmusic()">CLIQUE MOI CLIQUE MOI CLIQUE MOI!!</button>
+
+    <script>
+        function hrefFunction() {
+            window.location.href = "http://localhost:7080/pendu";
+        }
+
+        function playmusic() {
+            var sound = document.getElementById('musique');
+            var musicButton = document.getElementById('bmusique'); 
+
+            if (sound.paused || sound.ended) {
+                sound.play();
+                musicButton.innerText = "Musique: ON"; 
+            } else {
+                sound.pause();
+                sound.currentTime = 0;
+                musicButton.innerText = "Musique: OFF";
+            }
+        }
+
+    </script>
+</body>
+<footer>
+</footer>
+</html>

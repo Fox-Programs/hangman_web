@@ -1,17 +1,123 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="fr">
 <head>
-    
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&">
+    <link href="https://fonts.cdnfonts.com/css/trajan-pro" rel="stylesheet">
 </head>
-<body>
-    <h1> jeu du pendu </h1>
-    <form>
-        <label for="mot">Mot ou lettre</label><br>
-        <input type="text" id="mot" name="mot">
-        <input type="submit" hidden>
+<body class="pendu">
+    <p id="img" data-remaining="{{.RemainingAttempts}}"></p>
+    <div class="status">
+        <p class="word">
+            {{range .WordShown}}
+                {{if eq . "_"}}_ {{else}}{{.}} {{end}}
+            {{end}}
+        </p>
+    </div>
 
+    {{if eq .GameStatus "ongoing"}}
+    <form method="POST">
+        <input type="text" autofocus="true" class="guess" name="guess" maxlength="10" required >
     </form>
-</body>
 
+    <div class="used-letters">
+        <p>
+            {{range .GuessedLetters}}
+                {{.}} 
+            {{end}}
+        </p>
+    </div>
+    {{else if eq .GameStatus "won"}}
+    <h2 class="win">Ton daron serait fière</h2>
+    <a class="encore" href="/pendu">Encore ?</a>
+    {{else}}
+    <h2 class="loose">Vous avez échoué</h2>
+    <p class="reveal">Le mot était : {{.TargetWord}}</p>
+    <a  class="encore" href="/pendu">Encore ?</a>
+    {{end}}
+
+    <div id="image-container">
+        <img id="animated-image" src="../assets/1.png" alt="Animated Image">
+
+    <script>    
+        const imgContainer = document.getElementById("img");
+        const remaining = parseInt(imgContainer.getAttribute("data-remaining"), 10);
+        let text = "";
+        for (let i = 0; i < remaining; i++) {
+            text += '<img src="assets/hp.png" alt="hp">';
+        }if (remaining < 10){
+            for (let i = 0; i < 10 - remaining; i++){
+                text += '<img src="assets/hplost.png" alt="hp">';
+            }
+        }
+        imgContainer.innerHTML = text;
+    </script>
+
+    <script type="text/javascript">
+
+        let hrElement;
+        let counter = 25;
+        for (let i = 0; i < counter; i++) {
+          hrElement = document.createElement("HR");
+          
+            hrElement.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+            hrElement.style.animationDuration = 0.2 + Math.random() * 0.3 + "s";
+         
+          document.body.appendChild(hrElement);
+        }   
+      </script>
+          <script>
+  const imagePaths = [
+  "../assets/1.png",
+  "../assets/2.png",
+  "../assets/3.png",
+  "../assets/4.png",
+  "../assets/5.png",
+  "../assets/6.png",
+  "../assets/7.png",
+  "../assets/8.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/9.png",
+  "../assets/8.png",
+  "../assets/7.png",
+  "../assets/6.png",
+  "../assets/5.png",
+  "../assets/4.png",
+  "../assets/3.png",
+  "../assets/2.png",
+  "../assets/1.png",
+  "../assets/3.png",
+  "../assets/2.png",
+  "../assets/1.png"
+  
+];
+
+const imageElement = document.getElementById("animated-image");
+
+if(remaining > 0){
+
+let currentIndex = 0;
+
+function animateImages() {
+  imageElement.src = imagePaths[currentIndex]; 
+  currentIndex = (currentIndex + 1) % imagePaths.length; 
+}
+setInterval(animateImages, 400);
+}else{
+    imageElement.src = "assets/jsp.png";
+    imageElement.style.height = "100px"
+}
+
+
+          </script>
+</body>
+<footer>
+    
+</footer>
 </html>

@@ -1,0 +1,377 @@
+/* Assurer que le body occupe toute la hauteur de la fenêtre */
+.index {
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Hauteur de la fenêtre */
+}
+
+/* Le conteneur qui englobe le bouton */
+.button-container {
+    display: flex;            /* Active le mode Flexbox */
+    justify-content: center;  /* Centre horizontalement */
+    align-items:center;   /* Centre verticalement */
+    height: 500px;
+}
+
+/* Style du bouton */
+.jouer {
+    font-family:fantasy;
+    height: 100px;
+    border-style: none;
+    padding: 0;       /* Taille du bouton */
+    font-size: 100px;         /* Taille du texte */
+    background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
+    color: rgb(229, 239, 242);             /* Couleur du texte */
+    text-shadow:
+      0 0 7px #16161a,
+      0 0 10px #0d0e10,
+      0 0 21px #151789,
+      0 0 42px rgb(37, 37, 38),
+      0 0 82px rgb(11, 11, 11),
+      0 0 92px rgb(26, 29, 28),
+      0 0 102px rgba(21, 0, 255, 0),
+      0 0 151px rgb(30, 30, 31);
+      transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
+      animation: neon-flicker 1.5s infinite;
+}
+.jouer:hover{
+    transform: translateY(-5px); /* Légère élévation */
+    text-shadow:
+      0 0 7px rgb(194, 194, 199),
+      0 0 10px rgb(182, 182, 187),
+      0 0 21px rgb(243, 243, 248),
+      0 0 42px rgb(243, 243, 248);
+}
+#titre1 {
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+    
+      
+      
+}
+#titre2 {
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+    
+      
+}
+#bmusique{
+    font-family:fantasy;
+    border-style: none;
+    padding: 30px;       /* Taille du bouton */
+    font-size: 50px;         /* Taille du texte */
+    background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
+    color: rgb(229, 239, 242);
+    transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
+    animation: neon-flicker 1.5s infinite;
+}
+#bmusique:hover{
+    transform: translateY(-5px); /* Légère élévation */
+    font-family:fantasy;
+    border-style: none;
+    padding: 30px;       /* Taille du bouton */
+    font-size: 50px;         /* Taille du texte */
+    background-color: rgba(1, 6, 20, 0); /* Couleur de fond */
+    color: rgb(255, 255, 255);
+    text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+    transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
+            animation: neon-flicker 1.5s infinite;
+}
+.pendu{
+    background-image: url('background2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden; 
+}
+.word  { 
+    font-size: 24px; letter-spacing: 10px; 
+}
+.status {
+     margin: 20px 0; 
+    }
+
+ hr{
+        width: 10px;
+        border-color: transparent;
+        border-right-color: rgba(232, 225, 225, 0.7);
+        border-right-width: 80px;
+        position: absolute;
+        bottom: 100%;
+        transform-origin: 100% 50%;
+        animation-name: rain;
+        animation-timing-function: ease-in;
+        animation-iteration-count: infinite;
+        animation-delay: -2s;
+
+  }
+
+  @keyframes rain {
+    from {
+     transform: rotate(90deg) translateX(0);
+    }
+    to {
+     transform: rotate(90deg) translateX(calc(100vh));
+    }
+   }
+#animated-image{
+    height: 200px ;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0px;
+    left: 80px ;
+
+    
+}
+
+.word{
+    font-family: 'Trajan Pro', sans-serif;
+    color:whitesmoke;
+    font-size:125px;
+    text-align:center;
+    text-shadow:
+    3px 3px rgba(24, 25, 27, 0.938);
+    
+
+
+}
+.guess {
+    border-color: rgb(255, 255, 255);
+    border-style: none;
+    background-color: #00000050;
+    width: 800px;
+    color: rgb(255, 255, 255);
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 70px;
+    border-radius: 8px;
+    background-image: url("lance.png");
+    background-repeat: no-repeat;
+    padding-left: 320px;
+
+    margin: 0 auto; 
+    display: block; 
+}
+.guess:focus{
+    background-color: #00000071;
+    outline:none;
+}
+.used-letters{
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: rgb(10, 12, 65);
+    text-shadow:  
+    0 0 10px #fff,
+    0 0 21px #fff,
+    0 0 42px rgb(217, 220, 234),
+    0 0 102px rgba(110, 109, 121, 0.959),
+    0 0 151px rgba(24, 25, 27, 0.938);
+    text-align:center;
+}
+.reveal{
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: rgb(0, 0, 0);
+    text-shadow:  
+    0 0 10px #ff0000,
+    0 0 21px #ff0000,
+    0 0 42px rgb(217, 220, 234),
+    0 0 102px rgba(110, 109, 121, 0.959),
+    0 0 151px rgba(24, 25, 27, 0.938);
+    text-align:center;
+}
+
+.win{
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 100px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #2a48aa,
+      0 0 10px #2a50b9,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+.loose{
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 100px;
+    color: #000000;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #f50000,
+      0 0 10px #ff0000,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+.encore {
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    padding-right: 50px;
+    font-family: 'Trajan Pro', sans-serif;
+    font-size: 50px;
+    color: #000000;
+    text-shadow: 0 0 7px #000000;
+}
+.encore:hover{
+    color:white;
+}
+
+body {
+    background-image: url(backrondRegles.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+
+h1 {
+    font-family: fantasy;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    font-size: 3vw;
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-size: 70px;
+    color: #fff;
+  text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+    
+}
+
+h3 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 2vw;
+}
+
+h4 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 2vw;
+}
+
+p {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 2vw;
+}
+
+.a {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    font-size: 3vw;
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-family: fantasy;
+            text-decoration: none; /* Supprimer le soulignement */
+            font-size: 2.5rem; /* Taille du texte */
+            transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
+            animation: neon-flicker 1.5s infinite;
+
+    
+}
+
+.a:hover {
+    transform: translateY(-5px); /* Légère élévation */
+    text-shadow:  /* Avec l'attribut d'ombre tu peux faire un effet néon*/
+      0 0 7px #fff,
+      0 0 10px #fff,
+      0 0 21px #fff,
+      0 0 42px rgb(217, 220, 234),
+      0 0 102px rgba(110, 109, 121, 0.959),
+      0 0 151px rgba(24, 25, 27, 0.938);
+      
+}
+
+
+.b {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    font-size: 3vw;
+    justify-content: center;
+    display: flex;
+    align-items:center;
+    font-family:sofia;
+    font-family: fantasy;
+    color: white; /* Couleur principale du texte */
+            text-decoration: none; /* Supprimer le soulignement */
+            font-size: 2.5rem; /* Taille du texte */
+            font-weight: bold;
+            text-shadow: 0 0 5px white, 0 0 10px white, 0 0 20px white, 0 0 30px white;
+            transition: all 0.3s ease-in-out; /* Animation douce pour le survol */
+            animation: neon-flicker 1.5s infinite;
+
+    
+}
+
+.b:hover {
+    transform: translateY(-5px); /* Légère élévation */
+    text-shadow:
+      0 0 7px rgb(194, 194, 199),
+      0 0 10px rgb(182, 182, 187),
+      0 0 21px rgb(243, 243, 248),
+      0 0 42px rgb(243, 243, 248);
+         
+}
