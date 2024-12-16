@@ -7,10 +7,10 @@
     <link href="https://fonts.cdnfonts.com/css/trajan-pro" rel="stylesheet">
 </head>
 <body class="pendu">
-    <p id="img" data-remaining="{{.RemainingAttempts}}"></p>
+    <p id="img" data-remaining="{{.RemainingAttempts}}"></p><!--sert pour les pv voirs le js en dessous-->
     <div class="status">
         <p class="word">
-            {{range .WordShown}}
+            {{range .WordShown}}  <!--Affiche le mot avec une loop-->
                 {{if eq . "_"}}_ {{else}}{{.}} {{end}}
             {{end}}
         </p>
@@ -43,7 +43,7 @@
         <img id="animated-image" src="../assets/1.png" alt="Animated Image">
 
     <script>    
-        const imgContainer = document.getElementById("img");
+        const imgContainer = document.getElementById("img");//fait deux loops qui printent les images selon le nombres de tentatives restante
         const remaining = parseInt(imgContainer.getAttribute("data-remaining"), 10);
         let text = "";
         for (let i = 0; i < remaining; i++) {
@@ -58,13 +58,13 @@
 
     <script type="text/javascript">
 
-        let hrElement;
+        let hrElement; //animation de plus 
         let counter = 25;
         for (let i = 0; i < counter; i++) {
-          hrElement = document.createElement("HR");
+          hrElement = document.createElement("HR"); //HR = la pluie
           
-            hrElement.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
-            hrElement.style.animationDuration = 0.2 + Math.random() * 0.3 + "s";
+            hrElement.style.left = Math.floor(Math.random() * window.innerWidth) + "px"; //prend un nbr aléatoire = position de la goutte
+            hrElement.style.animationDuration = 0.2 + Math.random() * 0.3 + "s"; //fait aller la goutte plus ou moins vite
          
           document.body.appendChild(hrElement);
         }   
@@ -100,7 +100,7 @@
   
 ];
 
-const imageElement = document.getElementById("animated-image");
+const imageElement = document.getElementById("animated-image"); //change d'image en boucle pour créer une animation
 
 if(remaining > 0){
 
